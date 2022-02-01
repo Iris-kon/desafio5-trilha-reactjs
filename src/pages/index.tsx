@@ -42,6 +42,10 @@ export default function Home({ postsPagination }: HomeProps) {
             <p>{post.first_publication_date}</p>
           </div>
         })}
+
+        <button className={styles.button_more}>
+            Carregar mais posts
+        </button>
       </main>
     </>
   );
@@ -60,6 +64,8 @@ export const getStaticProps: GetStaticProps = async () => {
       ],
       pageSize: 3
   }) as PostPagination;
+
+  console.log(postsResponse)
 
   return {
     props: {
