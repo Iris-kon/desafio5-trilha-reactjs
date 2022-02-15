@@ -8,6 +8,8 @@
   /* Colors */
   --background: #1A1D23;
   --highlight: #FF57B2;
+  --white: #ffffff;
+  --white-800: #F8F8F8;
 }
 
 @media (max-width: 1080px) {
@@ -20,4 +22,17 @@
   html {
       font-size: 87.5%;
   }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--white);
+}
+
+body, input, textarea, select,  button {
+  font: 400 1rem "Inter", sans-serif;
+}
+
+button {
+  cursor: pointer;
 }

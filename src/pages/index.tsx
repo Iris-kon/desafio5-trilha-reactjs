@@ -28,6 +28,11 @@ interface HomeProps {
 }
 
 export default function Home({ postsPagination }: HomeProps) {
+
+  function test() {
+    console.log(postsPagination)
+  }
+
   return (
     <>
       <Head>
@@ -37,13 +42,13 @@ export default function Home({ postsPagination }: HomeProps) {
       <main className={styles.container}>
         <Header />
 
-        {postsPagination.results.map(post => {
-          <div key={post.uid}>
-            <p>{post.first_publication_date}</p>
+        {postsPagination.results.map(post => (
+          <div key={post.uid} className={styles.post_list}>
+            <h2 >{post.data.title}</h2>
           </div>
-        })}
+        ))}
 
-        <button className={styles.button_more}>
+        <button className={styles.button_more} onClick={test}>
             Carregar mais posts
         </button>
       </main>
@@ -64,8 +69,6 @@ export const getStaticProps: GetStaticProps = async () => {
       ],
       pageSize: 3
   }) as PostPagination;
-
-  console.log(postsResponse)
 
   return {
     props: {
