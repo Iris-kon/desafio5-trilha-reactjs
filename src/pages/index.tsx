@@ -1,12 +1,16 @@
-import { GetStaticProps } from 'next';
-
-import { getPrismicClient } from '../services/prismic';
+import { GetStaticProps } from 'next'
+import Header from '../components/Header'
+import Head from 'next/head'
+import Link from 'next/link'
+import { getPrismicClient } from '../services/prismic'
 import Prismic from '@prismicio/client'
 
-import commonStyles from '../styles/common.module.scss';
-import styles from './home.module.scss';
-import Header from '../components/Header';
-import Head from 'next/head';
+import { FiCalendar, FiUser } from 'react-icons/fi'
+
+import commonStyles from '../styles/common.module.scss'
+import styles from './home.module.scss'
+import { format } from 'date-fns'
+import ptBR from 'date-fns/locale/pt-BR'
 
 interface Post {
   uid?: string;
@@ -28,9 +32,8 @@ interface HomeProps {
 }
 
 export default function Home({ postsPagination }: HomeProps) {
+  function loadMore() {
 
-  function test() {
-    console.log(postsPagination)
   }
 
   return (
@@ -39,18 +42,42 @@ export default function Home({ postsPagination }: HomeProps) {
         <title>Space traveling</title>
       </Head>
 
-      <main className={styles.container}>
+      <main className={commonStyles.container}>
         <Header />
 
-        {postsPagination.results.map(post => (
-          <div key={post.uid} className={styles.post_list}>
-            <h2 >{post.data.title}</h2>
-          </div>
-        ))}
+        <div className={styles.posts}>
+          {
+            postsPagination.results.map(post => (
+              <Link key={post.uid} href={`/posts/preview/${post.uid}`}>
+                <a>
+                  <strong>{post.data.title}</strong>
+                  <p>{post.data.subtitle}</p>
+                  <div>
+                    <FiCalendar />
+                    <time>{
+                      format(
+                        new Date(post.first_publication_date),
+                        "d MMM yyyy",
+                        {
+                          locale: ptBR
+                        }
+                      )}
+                    </time>
+                    <FiUser /><p>{post.data.author}</p>
+                  </div> 
+                </a>
+              </Link>
+            ))
+          }
+        </div>
 
-        <button className={styles.button_more} onClick={test}>
-            Carregar mais posts
-        </button>
+        {
+          postsPagination.next_page !== null && (
+            <button className={styles.button_more} onClick={loadMore}>
+              Carregar mais posts
+            </button>
+          )
+        }
       </main>
     </>
   );
